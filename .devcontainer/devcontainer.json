@@ -1,0 +1,42 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/universal
+{
+	"name": "Default Linux Universal",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"image": "mcr.microsoft.com/devcontainers/universal:2-linux",
+	"features": {
+		"ghcr.io/devcontainers/features/terraform:1": {
+			"version": "latest",
+			"tflint": "latest",
+			"terragrunt": "latest"
+		},
+		"ghcr.io/devcontainers/features/azure-cli:1": {}
+		},
+	"containerEnv": {
+		"test": "${localEnv:test}",
+		"HOST_ARM_CLIENT_ID": "${localEnv:ARM_CLIENT_ID}",
+		"HOST_ARM_CLIENT_SECRET": "${localEnv:ARM_CLIENT_SECRET}",
+		"HOST_ARM_SUBSCRIPTION_ID": "${localEnv:ARM_SUBSCRIPTION_ID}",
+		"HOST_ARM_TENANT_ID": "${localEnv:ARM_TENANT_ID}"
+		},
+		//when testing in dev container terminal it becomes clear:
+		//only variables from the HOST, not the WSL host propagates using localEnv
+		//in the below test, only the USERPROFILE value was assigned to an env var test 
+		//accessible in the devcontainer terminal via $test
+		//is it possible at all to get from WSL env? Other options?
+		//see https://containers.dev/implementors/json_reference/
+	"remoteEnv": { "test": "${containerEnv:test}${localEnv:HOME}${localEnv:USERPROFILE}" }			
+	}
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	// "postCreateCommand": "uname -a",
+
+	// Configure tool-specific properties.
+	// "customizations": {},
+
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "root"
+}
